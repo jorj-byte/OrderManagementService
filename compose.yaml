@@ -1,0 +1,6 @@
+﻿services:
+  ordermanagement:
+    image: ordermanagement
+    build:
+      context: .
+      dockerfile: src/Gateways/OrderManagement/Dockerfile
