@@ -1,13 +1,12 @@
 using Finance.Infrastructure;
 using Financial.Application.Consumers;
 using MassTransit;
-using Microsoft.EntityFrameworkCore;
 using Order.Infrastructure;
 using Shared.Identity;
 using Serilog;
 using Shared.Infrastructure;
 using Shared.Kernel;
-using StackExchange.Redis;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +21,16 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 builder.Host.UseSerilog();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Online Store API",
+        Version = "v1",
+        Description = "API for Orders, Cart, and Payments"
+    });
+});
+
 builder.Services.AddMediatR(cfg => 
     cfg.RegisterServicesFromAssemblies(
         typeof(Order.Application.AssemblyMarker).Assembly,
